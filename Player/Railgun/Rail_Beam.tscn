@@ -1,0 +1,164 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://Player/Railgun/Rail_Scale_Curve.tres" type="Curve" id=1]
+[ext_resource path="res://Player/Railgun/Rail_Damp_Curve.tres" type="Curve" id=2]
+[ext_resource path="res://Player/Railgun/Rail_Laser.gd" type="Script" id=3]
+
+[sub_resource type="RectangleShape2D" id=4]
+extents = Vector2( 5000, 8 )
+
+[sub_resource type="Gradient" id=3]
+offsets = PoolRealArray( 0, 0.201117, 1 )
+colors = PoolColorArray( 1, 1, 1, 1, 0.858824, 0.611765, 1, 1, 0.635294, 0, 1, 1 )
+
+[sub_resource type="Animation" id=1]
+resource_name = "Default"
+length = 5.0
+tracks/0/type = "method"
+tracks/0/path = NodePath(".")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 5 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [  ],
+"method": "queue_free"
+} ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Fire_Particle:emitting")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("Beam_Particle:emitting")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+tracks/3/type = "method"
+tracks/3/path = NodePath("Hitbox")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0.05 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [  ],
+"method": "queue_free"
+} ]
+}
+
+[sub_resource type="Animation" id=2]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("Fire_Particle:emitting")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ false ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Beam_Particle:emitting")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ false ]
+}
+
+[node name="Rail_Beam" type="RayCast2D"]
+cast_to = Vector2( 10000, 0 )
+collision_mask = 2
+script = ExtResource( 3 )
+
+[node name="Line2D" type="Line2D" parent="."]
+modulate = Color( 1.25, 1, 1.5, 1 )
+points = PoolVector2Array( 0, 0, 10000, 0 )
+width = 15.0
+default_color = Color( 0.941176, 0.831373, 1, 1 )
+
+[node name="Hitbox" type="Area2D" parent="."]
+visible = false
+collision_layer = 2
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
+visible = false
+position = Vector2( 5000, 0 )
+shape = SubResource( 4 )
+
+[node name="Beam_Particle" type="CPUParticles2D" parent="."]
+modulate = Color( 1.5, 1.5, 1.5, 1 )
+position = Vector2( 5000, 0 )
+emitting = false
+amount = 500
+lifetime = 4.0
+one_shot = true
+explosiveness = 1.0
+lifetime_randomness = 0.5
+local_coords = false
+emission_shape = 2
+emission_rect_extents = Vector2( 5000, 15 )
+spread = 25.0
+gravity = Vector2( 0, 0 )
+initial_velocity = 50.0
+initial_velocity_random = 0.5
+linear_accel = 100.0
+linear_accel_random = 0.5
+scale_amount = 10.0
+scale_amount_curve = ExtResource( 1 )
+color_ramp = SubResource( 3 )
+
+[node name="Fire_Particle" type="CPUParticles2D" parent="."]
+modulate = Color( 1.5, 1.5, 1.5, 1 )
+emitting = false
+amount = 10
+lifetime = 4.0
+one_shot = true
+explosiveness = 1.0
+lifetime_randomness = 0.5
+local_coords = false
+spread = 12.0
+gravity = Vector2( 0, 0 )
+initial_velocity = 1000.0
+initial_velocity_random = 0.5
+damping_random = 0.5
+damping_curve = ExtResource( 2 )
+scale_amount = 10.0
+scale_amount_curve = ExtResource( 1 )
+color_ramp = SubResource( 3 )
+
+[node name="Tween" type="Tween" parent="."]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+autoplay = "Default"
+anims/Default = SubResource( 1 )
+anims/RESET = SubResource( 2 )

@@ -1,0 +1,135 @@
+[gd_scene load_steps=16 format=2]
+
+[ext_resource path="res://Player/Ship/Thrust_Gradient.tres" type="Gradient" id=1]
+[ext_resource path="res://assets/Roci.png" type="Texture" id=2]
+[ext_resource path="res://Player/Ship/Thrust_Scale_Curve.tres" type="Curve" id=3]
+[ext_resource path="res://Player/Ship/Thrust_Radial_Curve.tres" type="Curve" id=4]
+[ext_resource path="res://Player/Ship/Thrust.gd" type="Script" id=5]
+[ext_resource path="res://Player/Ship/Player.gd" type="Script" id=6]
+[ext_resource path="res://Player/Railgun/Rail_Particle.gd" type="Script" id=7]
+[ext_resource path="res://Player/Railgun/Rail_Gradient_Curve.tres" type="Gradient" id=8]
+[ext_resource path="res://Player/Ship/Mini_Thrust_1.gd" type="Script" id=9]
+[ext_resource path="res://Player/Ship/Mini_Thrust_2.gd" type="Script" id=10]
+[ext_resource path="res://Player/Ship/Mini_Thrust_4.gd" type="Script" id=11]
+[ext_resource path="res://Player/Ship/Mini_Thrust_3.gd" type="Script" id=12]
+[ext_resource path="res://Asteroids/Asteroid_Spawner.tscn" type="PackedScene" id=13]
+
+[sub_resource type="Curve" id=2]
+min_value = 0.25
+_data = [ Vector2( 0, 1 ), 0.0, 0.0, 0, 0, Vector2( 1, 0.25 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="Curve" id=1]
+_data = [ Vector2( 0, 1 ), 0.0, -1.96301, 0, 0, Vector2( 0.366337, 0.490909 ), -0.944415, -0.944415, 0, 0, Vector2( 1, 0.254545 ), 0.0, 0.0, 0, 0 ]
+
+[node name="Player" type="RigidBody2D"]
+light_mask = 512
+gravity_scale = 0.0
+angular_damp = 2.0
+script = ExtResource( 6 )
+
+[node name="Thrust" type="CPUParticles2D" parent="."]
+modulate = Color( 1, 1.5, 1.5, 1 )
+position = Vector2( -75, 0 )
+rotation = -3.14159
+amount = 300
+lifetime = 1.75
+lifetime_randomness = 0.3
+emission_shape = 2
+emission_rect_extents = Vector2( 1, 28 )
+direction = Vector2( 0, 0 )
+spread = 0.0
+gravity = Vector2( 0, 0 )
+initial_velocity = 30.0
+initial_velocity_random = 0.4
+radial_accel_curve = ExtResource( 4 )
+scale_amount = 5.0
+scale_amount_curve = ExtResource( 3 )
+color_ramp = ExtResource( 1 )
+script = ExtResource( 5 )
+
+[node name="Mini_Thrust_1" type="CPUParticles2D" parent="."]
+position = Vector2( 107, -41 )
+rotation = 5.35816
+amount = 50
+lifetime = 0.5
+emission_shape = 2
+emission_rect_extents = Vector2( 1, 5 )
+spread = 0.0
+gravity = Vector2( 0, 0 )
+radial_accel = -80.0
+scale_amount = 3.0
+scale_amount_curve = SubResource( 2 )
+script = ExtResource( 9 )
+
+[node name="Mini_Thrust_2" type="CPUParticles2D" parent="."]
+position = Vector2( 107, 41 )
+rotation = 0.925025
+amount = 50
+lifetime = 0.5
+emission_shape = 2
+emission_rect_extents = Vector2( 1, 5 )
+spread = 0.0
+gravity = Vector2( 0, 0 )
+radial_accel = -80.0
+scale_amount = 3.0
+scale_amount_curve = SubResource( 2 )
+script = ExtResource( 10 )
+
+[node name="Mini_Thrust_3" type="CPUParticles2D" parent="."]
+position = Vector2( -31, -38 )
+rotation = 3.97935
+amount = 50
+lifetime = 0.5
+emission_shape = 2
+emission_rect_extents = Vector2( 1, 5 )
+spread = 0.0
+gravity = Vector2( 0, 0 )
+radial_accel = -80.0
+scale_amount = 3.0
+scale_amount_curve = SubResource( 2 )
+script = ExtResource( 12 )
+
+[node name="Mini_Thrust_4" type="CPUParticles2D" parent="."]
+position = Vector2( -31, 38 )
+rotation = 2.30383
+amount = 50
+lifetime = 0.5
+emission_shape = 2
+emission_rect_extents = Vector2( 1, 5 )
+spread = 0.0
+gravity = Vector2( 0, 0 )
+radial_accel = -80.0
+scale_amount = 3.0
+scale_amount_curve = SubResource( 2 )
+script = ExtResource( 11 )
+
+[node name="Sprite" type="Sprite" parent="."]
+rotation = 1.5708
+scale = Vector2( 0.1, 0.1 )
+texture = ExtResource( 2 )
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+visible = false
+rotation = 1.5708
+scale = Vector2( 0.1, 0.1 )
+polygon = PoolVector2Array( -358, -158, -356, -462, -440, -572, -434, -1056, -398, -1106, -360, -1106, -322, -1152, -328, -1344, -150, -1754, -120, -1752, -64, -1584, -66, -1256, -2, -1200, 66, -1256, 66, -1586, 126, -1756, 154, -1754, 328, -1342, 320, -1154, 358, -1106, 402, -1104, 440, -1056, 442, -572, 358, -454, 364, -152, 412, -78, 418, 300, 366, 360, 362, 458, 274, 472, 370, 750, 358, 764, 0, 828, -358, 768, -370, 748, -278, 472, -358, 462, -368, 354, -420, 288, -410, -80 )
+
+[node name="Railgun_Pos" type="Position2D" parent="."]
+position = Vector2( 150, 0 )
+
+[node name="Rail_Particle" type="CPUParticles2D" parent="Railgun_Pos"]
+modulate = Color( 2.25, 2, 2.25, 1 )
+position = Vector2( -25, 0 )
+amount = 25
+spread = 10.0
+gravity = Vector2( 0, 0 )
+initial_velocity = 75.0
+initial_velocity_random = 0.5
+scale_amount = 5.0
+scale_amount_curve = SubResource( 1 )
+color_ramp = ExtResource( 8 )
+script = ExtResource( 7 )
+
+[node name="Asteriod_Spawner" parent="." instance=ExtResource( 13 )]
+visible = false
+position = Vector2( 150, 0 )
